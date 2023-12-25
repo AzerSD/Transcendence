@@ -8,3 +8,5 @@ echo 'source /app/venv/bin/activate' >> /root/.bashrc
 
 echo "Starting Django Server, Enjoy!"
 python /app/backend/manage.py runserver 0.0.0.0:8000
+
+# hntestPassword!1
