@@ -16,7 +16,7 @@ DEBUG = os.getenv('DEBUG')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
+SECRET_KEY = 'django-insecure-#klz0g4gt37#*8aou2@a&u-k)rofekot&_7$o8ee1^=er*=1&0'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '10.13.7.5', 'transcendence-backend-znhl.onrender.com']
 
@@ -98,33 +98,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 AUTH_USER_MODEL = 'user_api.AppUser'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# THIS IS THE DEFAULT DATABASE CONFIGURATION
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 # THIS IS THE DATABASE CONFIGURATION FOR THE DOCKER CONTAINER
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'transcend_users_db',
-            'USER': 'transcend_user',
-            'PASSWORD': 'transcend_pwd',
-            'HOST': 'db',
-            'PORT': '5432',
-        }
+# if DEBUG:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'transcend_users_db',
+        'USER': 'transcend_user',
+        'PASSWORD': 'transcend_pwd',
+        'HOST': 'db',
+        'PORT': '5432',
     }
-else:
-    DATABASES = {
-        'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
-    }
+}
+# else:
+#     DATABASES = {
+#         'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
