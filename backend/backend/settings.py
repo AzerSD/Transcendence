@@ -6,7 +6,6 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -16,7 +15,6 @@ DEBUG = os.getenv('DEBUG')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
 
 ALLOWED_HOSTS = [
         '*', 
@@ -49,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    ## apps
+	'django_otp',
+    'django_otp.plugins.otp_totp',
     'friendship',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -59,6 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+	'django_otp.middleware.OTPMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,18 +67,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
+		"http://localhost:4000",
 	    "http://localhost:3000",
 		"https://transcendence-frontend-3otz.onrender.com",
 		"https://zstenger93.github.io"
 	]
 
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
 # SESSION_COOKIE_SAMESITE = None
 # SESSION_COOKIE_SECURE = False
 # SESSION_COOKIE_SAMESITE = 'Lax'
@@ -163,7 +163,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -200,3 +199,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'sioudazer8@gmail.com'
+EMAIL_HOST_PASSWORD = 'sayy uonp nado adlm'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

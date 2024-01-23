@@ -6,9 +6,7 @@
 
 ---
 
-# The current version deployed can be accessed by the following link (only frontend atm)
-
-[TranscEND](https://zstenger93.github.io/Transcendence/)
+# The current version deployed can be accessed here: [TranscEND](https://zstenger93.github.io/Transcendence/)
 
 ---
 
@@ -58,11 +56,13 @@ Master <--- :white_check_mark: --- Dev <--- :white_check_mark: --- Microservices
 - Base of the project
 	- PostgreSQL
 	- Django backend
-	- Rest for API to connect back and frontend
+	- Rest API to connect back and frontend
 	- Frontend with React
+	- Nginx proxy
 - Backend
+	- Django
 - Frontend
-	- React
+	- React app
 
 ---
 ## Setup
@@ -74,8 +74,7 @@ Master <--- :white_check_mark: --- Dev <--- :white_check_mark: --- Microservices
 		- each microservice is an app
 	- PostgreSQL database
 	- frontend
-		- React application
-		- TailwindCss
+	- nginx proxy
 
 
 - images (not customized yet for front and back)
@@ -114,6 +113,7 @@ postgreSQL
 
 React
 Tailwind
+ThreeJS
 
 - Multi language support
 - Extra browser support
@@ -124,20 +124,23 @@ Tailwind
 	- Register with username email and password to the site
 	- Login with your username and password
 	- Login via 42 auth
-- Home / Welcome
+- Home
+	- Readme styled (kinda)
 - Game & Watch
 	- Pong
 		- Original
 		- AI Opponent
 		- Multiplayer
-		- Modded
 		- 3D Pong
 	- Future game
 - Chat
 	- Channels
-	- Online
+	- Online ppl
 	- Image Sharing
 - Profile
+	- Basic details
+	- Friends
+	- Match history
 - About Us
 - Logout
 
@@ -176,8 +179,6 @@ Tailwind
 
 PONG
 
-Sortof works now and you can play on one keyboard. Also AI mode has been implemented.
-
 - Extra Pong versions implemented:
 	- AI Pong
 	- 3D Pong
@@ -212,7 +213,7 @@ Docker files for services :white_check_mark:
 
 docker-compose.dev :x: :white_check_mark:
 
-Hashed passwords :x:
+Hashed passwords :white_check_mark:
 
 Using OAuth system from 42 :white_check_mark:
 
@@ -244,11 +245,11 @@ Playing live games on the site :x:
 
 Matchmaking system :x:
 
-Faithful to the original pong game :x:
+Faithful to the original pong game :white_check_mark:
 
 Custom options for the game :x:
 
-The game must be responsive :x:
+The game must be responsive :white_check_mark:
 
 
 ## Modules Used
@@ -283,9 +284,9 @@ The game must be responsive :x:
 	- *Minor module*: Monitoring system :x:
 	- *Major module*: Designing the Backend as Microservices :x:
 - **Graphics**
-	- *Major module*: Use advanced 3D techniques :x:
+	- *Major module*: Use advanced 3D techniques :white_check_mark:
 - **Accessibility**
-	- *Minor module*: Support on all devices :x:
+	- *Minor module*: Support more devices :x: :white_check_mark:
 	- *Minor module*: Expanding browser compatibility :white_check_mark:
 	- *Minor module*: Multiple language support :white_check_mark:
 	- *Minor module*: Add accessibility for visually impaired users :x:
