@@ -64,6 +64,22 @@ class UserRegister(APIView):
 		response["Access-Control-Allow-Credentials"] = 'true'
 		return response
 
+	def post(self, request):
+		if request.user.is_authenticated:
+				return Response({"detail": "You are already logged in, logout if you want to identify as someone else ;)"}, status=status.HTTP_400_BAD_REQUEST)
+		data = request.data
+		assert validate_email(data)
+		assert validate_password(data)
+		serializer = UserLoginSerializer(data=data)
+		if serializer.is_valid(raise_exception=True):
+			user = serializer.check_user(data)
+			token = RefreshToken.for_user(user)
+			token['email'] = user.email
+			token['username'] = user.username
+			return Response({
+				'refresh': str(token),
+				'access': str(token.access_token),
+			}, status=status.HTTP_200_OK)
 
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
@@ -83,6 +99,8 @@ class UserLogin(APIView):
 				user = serializer.check_user(data)
 				login(request, user)
 				token = RefreshToken.for_user(user)
+				token['email'] = user.email
+				token['username'] = user.username
 				response = Response({
 					'refresh': str(token),
 					'access': str(token.access_token),
