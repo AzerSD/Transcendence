@@ -39,7 +39,9 @@ import os
 import qrcode
 
 
-
+#######################################
+# User Management
+#######################################
 class UserRegister(APIView):
 	permission_classes = (permissions.AllowAny,)
 	# authentication_classes = (JWTAuthentication,)
@@ -80,6 +82,7 @@ class UserRegister(APIView):
 				'refresh': str(token),
 				'access': str(token.access_token),
 			}, status=status.HTTP_200_OK)
+
 
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
@@ -151,6 +154,63 @@ class UserViewSet(viewsets.ModelViewSet):
 		return response
 
 
+class accountDeletion(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (BlacklistCheckJWTAuthentication,)
+	##
+	def post(self, request):
+		if request.user.is_authenticated:
+			request.user.delete()
+			return Response({"detail": "Account deleted"}, status=status.HTTP_200_OK)
+		else:
+			return Response({"detail": "No active user session"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class updateProfile(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (BlacklistCheckJWTAuthentication,)
+	##
+	def post(self, request):
+		if request.user.is_authenticated:
+			data = request.data
+			if data.get('profile_picture'):
+				request.user.profile_picture = data.get('profile_picture')
+			if data.get('email'):
+				request.user.email = data.get('email')
+			if data.get('username'):
+				request.user.username = data.get('username')
+			if data.get('title'):
+				request.user.title = data.get('title')
+			if data.get('AboutMe'):
+				request.user.AboutMe = data.get('AboutMe')
+			if data.get('school'):
+				request.user.school = data.get('school')
+			if data.get('wins'):
+				request.user.wins = data.get('wins')
+			if data.get('losses'):
+				request.user.losses = data.get('losses')
+			if data.get('win_rate'):
+				if request.user.total_matches == 0:
+					request.user.win_rate = 0
+				else:
+					request.user.win_rate = request.user.wins / request.user.total_matches
+			if data.get('total_matches'):
+				request.user.total_matches = data.get('total_matches')
+			if data.get('match_history'):
+				history = request.user.match_history
+				if history is None:
+					history = []
+				history.append(data.get('match_history'))
+				request.user.match_history = history
+			if data.get('TwoFA'):
+				request.user.TwoFA = data.get('TwoFA')
+			request.user.save()
+			
+			return Response({"detail": "Profile updated"}, status=status.HTTP_200_OK)
+		else:
+			return Response({"detail": "No active user session"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class OAuthCallback(APIView):
 	permission_classes = (permissions.AllowAny,)
 	##
@@ -171,7 +231,7 @@ class OAuthCallback(APIView):
 			username = user_response.json()["login"]
 			email = user_response.json()["email"]
 			picture_url = user_response.json()["image"]["versions"]["medium"]
-
+			print(user_response.json())
 			titles = user_response.json().get("titles", [])
 			title = ""
 			if titles:
@@ -189,6 +249,7 @@ class OAuthCallback(APIView):
 			response = requests.get(picture_url)
 			if response.status_code == 200:
 				user.profile_picture.save(f"{username}_profile_picture.jpg", ContentFile(response.content), save=True)
+			print(user_response.json())
 			login(request, user)
 			html = """
 			<!DOCTYPE html>
@@ -222,20 +283,9 @@ class OAuthAuthorize(APIView):
 		}
 		return HttpResponseRedirect(f"{auth_url}?{urllib.parse.urlencode(params)}")
 
-
-
-class accountDeletion(APIView):
-	permission_classes = (permissions.IsAuthenticated,)
-	authentication_classes = (BlacklistCheckJWTAuthentication,)
-	##
-	def post(self, request):
-		if request.user.is_authenticated:
-			request.user.delete()
-			return Response({"detail": "Account deleted"}, status=status.HTTP_200_OK)
-		else:
-			return Response({"detail": "No active user session"}, status=status.HTTP_400_BAD_REQUEST)
-
-
+#######################################
+# Two Factor Authentication
+#######################################
 class activateTwoFa(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (BlacklistCheckJWTAuthentication,)
