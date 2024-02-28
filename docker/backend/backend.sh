@@ -23,9 +23,12 @@ echo "alias get='http --follow --timeout 6'" >> /root/.bashrc
 ############################################
 # gunicorn server                          #
 ############################################
-mkdir -pv /var/{log,run}/gunicorn/
-gunicorn -c config/gunicorn/dev.py --reload
-sleep 5
-python manage.py makemigrations && python manage.py migrate
-tail -f /var/log/gunicorn/dev.log
+# mkdir -pv /var/{log,run}/gunicorn/
+# gunicorn -c config/gunicorn/dev.py --reload
+# sleep 5
+# python manage.py makemigrations && python manage.py migrate
+
+# tail -f /var/log/gunicorn/dev.log
+
+daphne -b 0.0.0.0 -p 8000 backend.asgi:application
 

@@ -13,9 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 
+## User model
+AUTH_USER_MODEL = 'user_api.AppUser'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
 ALLOWED_HOSTS = [
         '*', 
         'localhost', 
@@ -41,6 +42,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+	'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +57,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'user_api.apps.UserApiConfig',
     'friendship_api',
-	'user_block'
+	'user_block',
+    'game',
 ]
 
 MIDDLEWARE = [
@@ -124,21 +127,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+ASGI_APPLICATION = 'backend.asgi.application'
 
-## User model
-AUTH_USER_MODEL = 'user_api.AppUser'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# THIS IS THE DEFAULT DATABASE CONFIGURATION
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # THIS IS THE DATABASE CONFIGURATION FOR THE DOCKER CONTAINER
 if DEBUG == 'True':

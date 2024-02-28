@@ -16,7 +16,8 @@ RUN     apt update && \
 		libsqlite3-dev \
 		libreadline-dev \
 		libncurses5-dev \
-		build-essential
+		build-essential \
+		redis \
 
 RUN     wget https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz
 RUN     tar xzf *.tgz && rm -f *.tgz
@@ -31,5 +32,6 @@ COPY    docker/backend/backend.sh /app/
 RUN     chmod +x /app/backend.sh
 
 EXPOSE 8000
+EXPOSE 6379
 
 ENTRYPOINT  ["docker/backend/backend.sh"]
